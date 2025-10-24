@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 199309L
+
 #include "vl53l1_platform.h"
 #include "vl53l1_api.h"
 
@@ -5,7 +7,10 @@
 #include <stdio.h>
 #include <sys/fcntl.h>
 #include <sys/ioctl.h>
+
 #include <unistd.h>
+#include <time.h>
+
 
 int num_devices = 0;
 // Maximum of 20 device connections.
@@ -265,7 +270,10 @@ VL53L1_Error VL53L1_WaitMs(VL53L1_Dev_t *pdev, int32_t wait_ms){
 }
 
 VL53L1_Error VL53L1_WaitUs(VL53L1_Dev_t *pdev, int32_t wait_us){
-    usleep(wait_us);
+    struct timespec ts;
+	ts.tv_sec = 0;
+	ts.tv_nsec = wait_us * 1000;
+	nanosleep(&ts, NULL);
 	VL53L1_Error status = VL53L1_ERROR_NONE;
 	return status;
 }
@@ -287,7 +295,12 @@ VL53L1_Error VL53L1_WaitValueMaskEx(
 		} else if ((reg_val & mask) == value) {
 			return VL53L1_ERROR_NONE;
 		}
-		usleep(poll_delay_ms * 1000);
+		uint32_t poll_delay_s = poll_delay_ms / 1000;
+		uint32_t poll_delay_us = (poll_delay_ms % 1000) * 1000;
+		struct timespec ts;
+		ts.tv_sec = 0;
+		ts.tv_nsec = poll_delay_us * 1000;
+		nanosleep(&ts, NULL);
 	}
 	return VL53L1_ERROR_TIME_OUT;
 }

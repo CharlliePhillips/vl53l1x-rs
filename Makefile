@@ -4,7 +4,7 @@ SRC = st-api
 LIB = libvl53l1x_api
 DYLIB = $(LIB).so
 STATICLIB = $(LIB).a
-LDFLAGS :=
+LDFLAGS := -lrt
 CFLAGS += -Ist-api/core -Ist-api/platform -std=c99
 
 # Default to build directory if no OUT_DIR specified.

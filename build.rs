@@ -20,6 +20,7 @@ fn main() {
     let out_dir = env::var("OUT_DIR").expect("Need OUT_DIR specified by cargo.");
     println!("{}", format!("cargo:rustc-link-search={}", out_dir));
     println!("cargo:rustc-link-lib=static=vl53l1x_api");
+    println!("cargo:rustc-link-lib=rt");
 }
 
 fn run(command: &mut Command) {
