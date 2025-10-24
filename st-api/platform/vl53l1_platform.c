@@ -270,8 +270,7 @@ VL53L1_Error VL53L1_WaitMs(VL53L1_Dev_t *pdev, int32_t wait_ms){
 }
 
 VL53L1_Error VL53L1_WaitUs(VL53L1_Dev_t *pdev, int32_t wait_us){
-<<<<<<< HEAD
-    	struct timespec ts;
+    struct timespec ts;
 	ts.tv_sec = 0;
 	ts.tv_nsec = wait_us * 1000;
 	nanosleep(&ts, NULL);
