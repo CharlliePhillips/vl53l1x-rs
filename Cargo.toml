@@ -28,7 +28,20 @@ version = "^0.1"
 
 [dependencies.num-traits]
 version = "^0.1"
+license = "MIT"
+description = "Library for the VL53L1X Time-of-Flight sensor."
+repository = "https://github.com/braincore/vl53l1x-rs"
+keywords = ["vl53l1x"]
+readme = "README.md"
 
 [features]
 default = []
 i2c-2v8-mode = []
+
+[dependencies]
+enum-primitive-derive = "^0.1"
+num-traits = "^0.1"
+
+[[example]]
+name = "scan"
+crate-type = ["bin"]
