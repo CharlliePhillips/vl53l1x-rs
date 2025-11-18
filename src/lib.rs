@@ -26,7 +26,128 @@ extern "C" {
     fn setMeasurementTimingBudgetMicroSeconds(device_id: u8, timing_budget_us: u32) -> u8;
     fn getInterMeasurementPeriodMilliSeconds(device_id: u8) -> u32;
     fn setInterMeasurementPeriodMilliSeconds(device_id: u8, inter_measurement_period: u32) -> u8;
+
+    // Calibration functions
+    fn getCalibrationData(device_id: u8, calibration_data:  &mut CalibrationData) -> u8;
+    fn setCalibrationData(device_id: u8, calibration_data:  &mut CalibrationData) -> u8;
+    fn performRefSpadManagement(device_id: u8) -> u8;
+    fn performOffsetSimpleCalibration(device_id: u8, calibration_dist_mm: i32) -> u8;
+    fn performSingleTargetXTalkCalibration(device_id: u8, calibration_dist_mm: i32) -> u8;
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+#[repr(C)]
+pub struct CalibrationData {
+	struct_version: u32,
+	customer: CustomerNvmManaged,
+	add_off_cal_data: AdditionalOffsetCalData,
+	optical_centre: OpticalCentre,
+	gain_cal: GainCalibrationData,
+	cal_peak_rate_map: CalPeakRateMap,
+}
+
+impl CalibrationData {
+    pub fn new() -> Self {
+        self {
+            struct_version: 0,
+            customer: CustomerNvmManaged {
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+            },
+            add_off_cal_data: AdditionalOffsetCalData {
+                0,
+                0,
+                0,
+                0,
+            }
+            optical_centre: OpticalCentre {
+                0,
+                0,
+            }
+            gain_cal: GainCalibrationData {
+                0,
+            }
+            cal_peak_rate_map: CalPeakRateMap {
+                0,
+                0,
+                0,
+                0,
+                [0;VL53L1_NVM_PEAK_RATE_MAP_SAMPLES],
+            }
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[repr(C)]
+struct CustomerNvmManaged {
+    global_config__spad_enables_ref_0: u8,
+    global_config__spad_enables_ref_1: u8,
+    global_config__spad_enables_ref_2: u8,
+    global_config__spad_enables_ref_3: u8,
+    global_config__spad_enables_ref_4: u8,
+    global_config__spad_enables_ref_5: u8,
+    global_config__ref_en_start_select: u8,
+    ref_spad_man__num_requested_ref_spads: u8,
+    ref_spad_man__ref_location: u8,
+    algo__crosstalk_compensation_plane_offset_kcps: u32,
+    algo__crosstalk_compensation_x_plane_gradient_kcps: i16,
+    algo__crosstalk_compensation_y_plane_gradient_kcps: i16,
+    ref_spad_char__total_rate_target_mcps: u16,
+    algo__part_to_part_range_offset_mm: i16,
+    mm_config__inner_offset_mm: i16,
+    mm_config__outer_offset_mm: i16,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[repr(C)]
+struct AdditionalOffsetCalData {
+    result__mm_inner_actual_effective_spads: u16,
+    result__mm_outer_actual_effective_spads: u16,
+    result__mm_inner_peak_signal_count_rtn_mcps: u16,
+    result__mm_outer_peak_signal_count_rtn_mcps: u16,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[repr(C)]
+struct OpticalCentre{
+    x_centre: u8;
+    y_centre: u8;
+} 
+
+#[derive(Debug, Serialize, Deserialize)]
+#[repr(C)]
+struct GainCalibrationData{
+	standard_ranging_gain_factor: u16,
+}
+
+
+const VL53L1_NVM_PEAK_RATE_MAP_SAMPLES = 25;
+
+#[derive(Debug, Serialize, Deserialize)]
+#[repr(C)]
+struct CalPeakRateMap{
+    cal_distance_mm: i16,
+    max_samples: u16,
+    width: u16,
+    height: u16, 
+	peak_rate_mcps: [u16; VL53L1_NVM_PEAK_RATE_MAP_SAMPLES],
+}
+
 
 #[derive(Debug)]
 #[repr(C)]
@@ -247,6 +368,54 @@ impl Vl53l1x {
     ) -> Result<(), Vl53l1xError> {
         unsafe {
             let res = setInterMeasurementPeriodMilliSeconds(self.i2c_dev, inter_measurement_period);
+            if res != 0 {
+                return Err(Vl53l1xError::from_u8(res).unwrap());
+            }
+        }
+        Ok(())
+    }
+
+    pub fn get_calibration_data(&mut self, calibration_data: &mut CalibrationData) -> Result<(), Vl53l1xError> {
+        unsafe {
+            let res = getCalibrationData(self.i2c_dev, calibration_data);
+            if res != 0 {
+                return Err(Vl53l1xError::from_u8(res).unwrap());
+            }
+        }
+        Ok(())
+    }
+
+    pub fn set_calibration_data(&mut self, calibration_data: &mut CalibrationData) -> Result<(), Vl53l1xError> {
+        unsafe {
+            let res = setCalibrationData(self.i2c_dev, calibration_data);
+            if res != 0 {
+                return Err(Vl53l1xError::from_u8(res).unwrap());
+            }
+        }
+        Ok(())
+    }
+
+    pub fn perform_ref_spad_management(&mut self) -> Result<(), Vl53l1xError> {
+        unsafe {
+            let res = performRefSpadManagement(self.i2c_dev);
+            if res != 0 {
+                return Err(Vl53l1xError::from_u8(res).unwrap());
+            }
+        }
+        Ok(())
+    }
+    pub fn perform_offset_simple_calibration(&mut self, calibration_dist_mm: i32) -> Result<(), Vl53l1xError> {
+        unsafe {
+            let res = performOffsetSimpleCalibration(self.i2c_dev, calibration_dist_mm);
+            if res != 0 {
+                return Err(Vl53l1xError::from_u8(res).unwrap());
+            }
+        }
+        Ok(())
+    }
+    pub fn perform_single_target_xtalk_calibration(device_id: u8, calibration_dist_mm: i32) -> Result<(), Vl53l1xError> {
+        unsafe {
+            let res = performSingleTargetXTalkCalibration(self.i2c_dev, calibration_dist_mm);
             if res != 0 {
                 return Err(Vl53l1xError::from_u8(res).unwrap());
             }

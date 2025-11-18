@@ -31,6 +31,8 @@ i2c-2v8-mode = []
 [dependencies]
 enum-primitive-derive = "^0.1"
 num-traits = "^0.1"
+serde = { version = "1.0", features = ["derive"] }
+ron = "0.8"
 
 [[example]]
 name = "scan"
