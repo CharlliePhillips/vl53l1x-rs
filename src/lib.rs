@@ -3,7 +3,7 @@ extern crate enum_primitive_derive;
 extern crate num_traits;
 use num_traits::FromPrimitive;
 use std::{error, fmt};
-use serde::*
+use serde::*;
 
 #[link(name = "vl53l1x_api")]
 extern "C" {
