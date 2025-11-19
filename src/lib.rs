@@ -38,12 +38,12 @@ extern "C" {
 #[derive(Debug)]
 #[repr(C)]
 pub struct CalibrationData {
-	struct_version: u32,
-	customer: CustomerNvmManaged,
-	add_off_cal_data: AdditionalOffsetCalData,
-	optical_centre: OpticalCentre,
-	gain_cal: GainCalibrationData,
-	cal_peak_rate_map: CalPeakRateMap,
+	pub struct_version: u32,
+	pub customer: CustomerNvmManaged,
+	pub add_off_cal_data: AdditionalOffsetCalData,
+	pub optical_centre: OpticalCentre,
+	pub gain_cal: GainCalibrationData,
+	pub cal_peak_rate_map: CalPeakRateMap,
 }
 
 impl CalibrationData {
