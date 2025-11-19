@@ -3,6 +3,7 @@ extern crate enum_primitive_derive;
 extern crate num_traits;
 use num_traits::FromPrimitive;
 use std::{error, fmt};
+use serde::*
 
 #[link(name = "vl53l1x_api")]
 extern "C" {
@@ -51,42 +52,42 @@ impl CalibrationData {
         self {
             struct_version: 0,
             customer: CustomerNvmManaged {
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
+               global_config__spad_enables_ref_0: 0,
+               global_config__spad_enables_ref_1: 0,
+               global_config__spad_enables_ref_2: 0,
+               global_config__spad_enables_ref_3: 0,
+               global_config__spad_enables_ref_4: 0,
+               global_config__spad_enables_ref_5: 0,
+               global_config__ref_en_start_select: 0,
+               ref_spad_man__num_requested_ref_spads: 0,
+               ref_spad_man__ref_location: 0,
+               algo__crosstalk_compensation_plane_offset_kcps: 0,
+               algo__crosstalk_compensation_x_plane_gradient_kcps: 0,
+               algo__crosstalk_compensation_y_plane_gradient_kcps: 0,
+               ref_spad_char__total_rate_target_mcps: 0,
+               algo__part_to_part_range_offset_mm: 0,
+               mm_config__inner_offset_mm: 0,
+               mm_config__outer_offset_mm: 0,
             },
             add_off_cal_data: AdditionalOffsetCalData {
-                0,
-                0,
-                0,
-                0,
+               result__mm_inner_actual_effective_spads: 0,
+               result__mm_outer_actual_effective_spads: 0,
+               result__mm_inner_peak_signal_count_rtn_mcps: 0,
+               result__mm_outer_peak_signal_count_rtn_mcps: 0,
             }
             optical_centre: OpticalCentre {
-                0,
-                0,
+                x_centre: 0,
+                y_centre: 0,
             }
             gain_cal: GainCalibrationData {
-                0,
+                standard_ranging_gain_factor: 0,
             }
             cal_peak_rate_map: CalPeakRateMap {
-                0,
-                0,
-                0,
-                0,
-                [0;VL53L1_NVM_PEAK_RATE_MAP_SAMPLES],
+               cal_distance_mm: 0,
+               max_samples: 0,
+               width: 0,
+               height: 0,
+               peak_rate_mcps: [0; VL53L1_NVM_PEAK_RATE_MAP_SAMPLES],
             }
         }
     }
@@ -125,8 +126,8 @@ struct AdditionalOffsetCalData {
 #[derive(Debug, Serialize, Deserialize)]
 #[repr(C)]
 struct OpticalCentre{
-    x_centre: u8;
-    y_centre: u8;
+    x_centre: u8,
+    y_centre: u8,
 } 
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -136,7 +137,7 @@ struct GainCalibrationData{
 }
 
 
-const VL53L1_NVM_PEAK_RATE_MAP_SAMPLES = 25;
+const VL53L1_NVM_PEAK_RATE_MAP_SAMPLES: usize = 25;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[repr(C)]
@@ -145,7 +146,7 @@ struct CalPeakRateMap{
     max_samples: u16,
     width: u16,
     height: u16, 
-	peak_rate_mcps: [u16; VL53L1_NVM_PEAK_RATE_MAP_SAMPLES],
+    peak_rate_mcps: [u16; VL53L1_NVM_PEAK_RATE_MAP_SAMPLES],
 }
 
 
@@ -413,7 +414,7 @@ impl Vl53l1x {
         }
         Ok(())
     }
-    pub fn perform_single_target_xtalk_calibration(device_id: u8, calibration_dist_mm: i32) -> Result<(), Vl53l1xError> {
+    pub fn perform_single_target_xtalk_calibration(&mut self, calibration_dist_mm: i32) -> Result<(), Vl53l1xError> {
         unsafe {
             let res = performSingleTargetXTalkCalibration(self.i2c_dev, calibration_dist_mm);
             if res != 0 {
