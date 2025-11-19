@@ -95,44 +95,44 @@ impl CalibrationData {
 #[derive(Debug)]
 #[repr(C)]
 pub struct CustomerNvmManaged {
-    global_config__spad_enables_ref_0: u8,
-    global_config__spad_enables_ref_1: u8,
-    global_config__spad_enables_ref_2: u8,
-    global_config__spad_enables_ref_3: u8,
-    global_config__spad_enables_ref_4: u8,
-    global_config__spad_enables_ref_5: u8,
-    global_config__ref_en_start_select: u8,
-    ref_spad_man__num_requested_ref_spads: u8,
-    ref_spad_man__ref_location: u8,
-    algo__crosstalk_compensation_plane_offset_kcps: u32,
-    algo__crosstalk_compensation_x_plane_gradient_kcps: i16,
-    algo__crosstalk_compensation_y_plane_gradient_kcps: i16,
-    ref_spad_char__total_rate_target_mcps: u16,
-    algo__part_to_part_range_offset_mm: i16,
-    mm_config__inner_offset_mm: i16,
-    mm_config__outer_offset_mm: i16,
+    pub global_config__spad_enables_ref_0: u8,
+    pub global_config__spad_enables_ref_1: u8,
+    pub global_config__spad_enables_ref_2: u8,
+    pub global_config__spad_enables_ref_3: u8,
+    pub global_config__spad_enables_ref_4: u8,
+    pub global_config__spad_enables_ref_5: u8,
+    pub global_config__ref_en_start_select: u8,
+    pub ref_spad_man__num_requested_ref_spads: u8,
+    pub ref_spad_man__ref_location: u8,
+    pub algo__crosstalk_compensation_plane_offset_kcps: u32,
+    pub algo__crosstalk_compensation_x_plane_gradient_kcps: i16,
+    pub algo__crosstalk_compensation_y_plane_gradient_kcps: i16,
+    pub ref_spad_char__total_rate_target_mcps: u16,
+    pub algo__part_to_part_range_offset_mm: i16,
+    pub mm_config__inner_offset_mm: i16,
+    pub mm_config__outer_offset_mm: i16,
 }
 
 #[derive(Debug)]
 #[repr(C)]
 pub struct AdditionalOffsetCalData {
-    result__mm_inner_actual_effective_spads: u16,
-    result__mm_outer_actual_effective_spads: u16,
-    result__mm_inner_peak_signal_count_rtn_mcps: u16,
-    result__mm_outer_peak_signal_count_rtn_mcps: u16,
+    pub result__mm_inner_actual_effective_spads: u16,
+    pub result__mm_outer_actual_effective_spads: u16,
+    pub result__mm_inner_peak_signal_count_rtn_mcps: u16,
+    pub result__mm_outer_peak_signal_count_rtn_mcps: u16,
 }
 
 #[derive(Debug)]
 #[repr(C)]
 pub struct OpticalCentre{
-    x_centre: u8,
-    y_centre: u8,
+    pub x_centre: u8,
+    pub y_centre: u8,
 } 
 
 #[derive(Debug)]
 #[repr(C)]
 pub struct GainCalibrationData{
-	standard_ranging_gain_factor: u16,
+	pub standard_ranging_gain_factor: u16,
 }
 
 
@@ -141,11 +141,11 @@ const VL53L1_NVM_PEAK_RATE_MAP_SAMPLES: usize = 25;
 #[derive(Debug)]
 #[repr(C)]
 pub struct CalPeakRateMap{
-    cal_distance_mm: i16,
-    max_samples: u16,
-    width: u16,
-    height: u16, 
-    peak_rate_mcps: [u16; VL53L1_NVM_PEAK_RATE_MAP_SAMPLES],
+    pub cal_distance_mm: i16,
+    pub max_samples: u16,
+    pub width: u16,
+    pub height: u16, 
+    pub peak_rate_mcps: [u16; VL53L1_NVM_PEAK_RATE_MAP_SAMPLES],
 }
 
 
