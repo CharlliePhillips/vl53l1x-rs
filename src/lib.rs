@@ -94,7 +94,7 @@ impl CalibrationData {
 
 #[derive(Debug)]
 #[repr(C)]
-struct CustomerNvmManaged {
+pub struct CustomerNvmManaged {
     global_config__spad_enables_ref_0: u8,
     global_config__spad_enables_ref_1: u8,
     global_config__spad_enables_ref_2: u8,
@@ -115,7 +115,7 @@ struct CustomerNvmManaged {
 
 #[derive(Debug)]
 #[repr(C)]
-struct AdditionalOffsetCalData {
+pub struct AdditionalOffsetCalData {
     result__mm_inner_actual_effective_spads: u16,
     result__mm_outer_actual_effective_spads: u16,
     result__mm_inner_peak_signal_count_rtn_mcps: u16,
@@ -124,14 +124,14 @@ struct AdditionalOffsetCalData {
 
 #[derive(Debug)]
 #[repr(C)]
-struct OpticalCentre{
+pub struct OpticalCentre{
     x_centre: u8,
     y_centre: u8,
 } 
 
 #[derive(Debug)]
 #[repr(C)]
-struct GainCalibrationData{
+pub struct GainCalibrationData{
 	standard_ranging_gain_factor: u16,
 }
 
@@ -140,7 +140,7 @@ const VL53L1_NVM_PEAK_RATE_MAP_SAMPLES: usize = 25;
 
 #[derive(Debug)]
 #[repr(C)]
-struct CalPeakRateMap{
+pub struct CalPeakRateMap{
     cal_distance_mm: i16,
     max_samples: u16,
     width: u16,
@@ -151,7 +151,7 @@ struct CalPeakRateMap{
 
 #[derive(Debug)]
 #[repr(C)]
-struct RangingMeasurement {
+pub struct RangingMeasurement {
     timestamp: u32,
     stream_count: u8,
     range_quality_level: u8,
