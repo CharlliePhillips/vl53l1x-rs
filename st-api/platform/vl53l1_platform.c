@@ -1,4 +1,4 @@
-#include "vl53l1_platform_user_data.h"
+//#include "vl53l1_platform_user_data.h"
 #define _POSIX_C_SOURCE 199309L
 
 #include "vl53l1_platform.h"
@@ -319,14 +319,14 @@ VL53L1_Error setCalibrationData(uint8_t device_id, VL53L1_CalibrationData_t  *pC
 }
 
 VL53L1_Error performRefSpadManagement(uint8_t device_id) {
-     VL53L1_DEV dev = devices[device_id - 1];   
+    VL53L1_DEV dev = devices[device_id - 1];   
     return VL53L1_PerformRefSpadManagement(dev);
 }
 
 VL53L1_Error performOffsetSimpleCalibration(uint8_t device_id, int32_t CalDistanceMilliMeter) 
 {
     VL53L1_DEV dev = devices[device_id - 1];
-    return performOffsetSimpleCalibration(dev, CalDistanceMilliMeter);
+    return VL53L1_PerformOffsetSimpleCalibration(dev, CalDistanceMilliMeter);
 }
 
 VL53L1_Error performSingleTargetXTalkCalibration(uint8_t device_id, int32_t CalDistanceMilliMeter) 
