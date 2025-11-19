@@ -3,7 +3,6 @@ extern crate enum_primitive_derive;
 extern crate num_traits;
 use num_traits::FromPrimitive;
 use std::{error, fmt};
-use serde::{Serialize, Deserialize};
 
 #[link(name = "vl53l1x_api")]
 extern "C" {
@@ -36,7 +35,7 @@ extern "C" {
     fn performSingleTargetXTalkCalibration(device_id: u8, calibration_dist_mm: i32) -> u8;
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 #[repr(C)]
 pub struct CalibrationData {
 	struct_version: u32,
@@ -49,7 +48,7 @@ pub struct CalibrationData {
 
 impl CalibrationData {
     pub fn new() -> Self {
-        self {
+        Self {
             struct_version: 0,
             customer: CustomerNvmManaged {
                global_config__spad_enables_ref_0: 0,
@@ -93,7 +92,7 @@ impl CalibrationData {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 #[repr(C)]
 struct CustomerNvmManaged {
     global_config__spad_enables_ref_0: u8,
@@ -114,7 +113,7 @@ struct CustomerNvmManaged {
     mm_config__outer_offset_mm: i16,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 #[repr(C)]
 struct AdditionalOffsetCalData {
     result__mm_inner_actual_effective_spads: u16,
@@ -123,14 +122,14 @@ struct AdditionalOffsetCalData {
     result__mm_outer_peak_signal_count_rtn_mcps: u16,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 #[repr(C)]
 struct OpticalCentre{
     x_centre: u8,
     y_centre: u8,
 } 
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 #[repr(C)]
 struct GainCalibrationData{
 	standard_ranging_gain_factor: u16,
@@ -139,7 +138,7 @@ struct GainCalibrationData{
 
 const VL53L1_NVM_PEAK_RATE_MAP_SAMPLES: usize = 25;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 #[repr(C)]
 struct CalPeakRateMap{
     cal_distance_mm: i16,
