@@ -1,3 +1,4 @@
+//#include "vl53l1_platform_user_data.h"
 #define _POSIX_C_SOURCE 199309L
 
 #include "vl53l1_platform.h"
@@ -304,3 +305,35 @@ VL53L1_Error VL53L1_WaitValueMaskEx(
 	}
 	return VL53L1_ERROR_TIME_OUT;
 }
+
+VL53L1_Error getCalibrationData(uint8_t device_id, VL53L1_CalibrationData_t  *pCalibrationData)
+{
+    VL53L1_DEV dev = devices[device_id - 1];
+    return VL53L1_GetCalibrationData(dev, pCalibrationData);
+}
+
+VL53L1_Error setCalibrationData(uint8_t device_id, VL53L1_CalibrationData_t  *pCalibrationData)
+{
+    VL53L1_DEV dev = devices[device_id - 1];
+    return VL53L1_SetCalibrationData(dev, pCalibrationData);
+}
+
+VL53L1_Error performRefSpadManagement(uint8_t device_id) {
+    VL53L1_DEV dev = devices[device_id - 1];   
+    return VL53L1_PerformRefSpadManagement(dev);
+}
+
+VL53L1_Error performOffsetSimpleCalibration(uint8_t device_id, int32_t CalDistanceMilliMeter) 
+{
+    VL53L1_DEV dev = devices[device_id - 1];
+    return VL53L1_PerformOffsetSimpleCalibration(dev, CalDistanceMilliMeter);
+}
+
+VL53L1_Error performSingleTargetXTalkCalibration(uint8_t device_id, int32_t CalDistanceMilliMeter) 
+{
+    VL53L1_DEV dev = devices[device_id - 1];
+    return VL53L1_PerformSingleTargetXTalkCalibration(dev, CalDistanceMilliMeter);
+}
+
+
+
