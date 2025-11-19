@@ -74,21 +74,21 @@ impl CalibrationData {
                result__mm_outer_actual_effective_spads: 0,
                result__mm_inner_peak_signal_count_rtn_mcps: 0,
                result__mm_outer_peak_signal_count_rtn_mcps: 0,
-            }
+            },
             optical_centre: OpticalCentre {
                 x_centre: 0,
                 y_centre: 0,
-            }
+            },
             gain_cal: GainCalibrationData {
                 standard_ranging_gain_factor: 0,
-            }
+            },
             cal_peak_rate_map: CalPeakRateMap {
                cal_distance_mm: 0,
                max_samples: 0,
                width: 0,
                height: 0,
                peak_rate_mcps: [0; VL53L1_NVM_PEAK_RATE_MAP_SAMPLES],
-            }
+            },
         }
     }
 }
